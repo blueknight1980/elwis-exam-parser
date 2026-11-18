@@ -1,0 +1,15 @@
+{
+    "private": true,
+    "scripts": {
+        "docker:build": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml build",
+        "docker:config": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml config",
+        "docker:up": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml up -d",
+        "docker:down": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml down",
+        "docker:start": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml start",
+        "docker:stop": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml stop",
+        "docker:exec-python": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml exec python bash",
+        "parser": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml exec python elwis-parser",
+        "parser:see": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml exec python elwis-parser parse data/sources/Fragenkatalog-See-August-2023.pdf --exam sbf-see --output data/exports/see --overwrite",
+        "parser:binnen": "docker compose --env-file .docker/.env -f .docker/docker-compose.yml exec python elwis-parser parse data/sources/Fragenkatalog-Binnen-August-2023.pdf --exam sbf-binnen --output data/exports/binnen --overwrite"
+    }
+}

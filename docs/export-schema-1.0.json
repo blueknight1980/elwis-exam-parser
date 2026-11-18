@@ -1,0 +1,579 @@
+{
+  "$defs": {
+    "Answer": {
+      "additionalProperties": false,
+      "description": "One answer option in its original position.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "image_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Image Ids",
+          "type": "array"
+        },
+        "original_position": {
+          "minimum": 1,
+          "title": "Original Position",
+          "type": "integer"
+        },
+        "is_correct": {
+          "default": false,
+          "title": "Is Correct",
+          "type": "boolean"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "original_position"
+      ],
+      "title": "Answer",
+      "type": "object"
+    },
+    "BoundingBox": {
+      "additionalProperties": false,
+      "description": "Axis-aligned rectangle in PDF user space.",
+      "properties": {
+        "x0": {
+          "title": "X0",
+          "type": "number"
+        },
+        "y0": {
+          "title": "Y0",
+          "type": "number"
+        },
+        "x1": {
+          "title": "X1",
+          "type": "number"
+        },
+        "y1": {
+          "title": "Y1",
+          "type": "number"
+        }
+      },
+      "required": [
+        "x0",
+        "y0",
+        "x1",
+        "y1"
+      ],
+      "title": "BoundingBox",
+      "type": "object"
+    },
+    "Catalog": {
+      "additionalProperties": false,
+      "description": "A catalog or section that groups question ids.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "examination_id": {
+          "title": "Examination Id",
+          "type": "string"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Version"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "question_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Question Ids",
+          "type": "array"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "examination_id",
+        "name",
+        "source_id"
+      ],
+      "title": "Catalog",
+      "type": "object"
+    },
+    "ImageAsset": {
+      "additionalProperties": false,
+      "description": "One placed image and the file written for it.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "filename": {
+          "title": "Filename",
+          "type": "string"
+        },
+        "relative_path": {
+          "title": "Relative Path",
+          "type": "string"
+        },
+        "mime_type": {
+          "title": "Mime Type",
+          "type": "string"
+        },
+        "sha256": {
+          "title": "Sha256",
+          "type": "string"
+        },
+        "source_page": {
+          "minimum": 1,
+          "title": "Source Page",
+          "type": "integer"
+        },
+        "source_document_id": {
+          "title": "Source Document Id",
+          "type": "string"
+        },
+        "bounding_box": {
+          "$ref": "#/$defs/BoundingBox"
+        },
+        "width": {
+          "minimum": 0,
+          "title": "Width",
+          "type": "integer"
+        },
+        "height": {
+          "minimum": 0,
+          "title": "Height",
+          "type": "integer"
+        },
+        "origin": {
+          "$ref": "#/$defs/ImageOrigin"
+        },
+        "associated_question_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Associated Question Ids",
+          "type": "array"
+        },
+        "associated_answer_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Associated Answer Ids",
+          "type": "array"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "filename",
+        "relative_path",
+        "mime_type",
+        "sha256",
+        "source_page",
+        "source_document_id",
+        "bounding_box",
+        "width",
+        "height",
+        "origin"
+      ],
+      "title": "ImageAsset",
+      "type": "object"
+    },
+    "ImageOrigin": {
+      "description": "How an image file was produced.\n\n``manual_redraw`` is reserved for a later, explicitly marked asset.\nThe extractor never assigns it.",
+      "enum": [
+        "raster_original",
+        "rendered_region",
+        "manual_redraw"
+      ],
+      "title": "ImageOrigin",
+      "type": "string"
+    },
+    "NavigationDetails": {
+      "additionalProperties": false,
+      "description": "Structured body of a navigation task variant.",
+      "properties": {
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "scenario": {
+          "default": "",
+          "title": "Scenario",
+          "type": "string"
+        },
+        "parts": {
+          "items": {
+            "$ref": "#/$defs/NavigationPart"
+          },
+          "title": "Parts",
+          "type": "array"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "title": "NavigationDetails",
+      "type": "object"
+    },
+    "NavigationPart": {
+      "additionalProperties": false,
+      "description": "One numbered part of a navigation task.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "prompt": {
+          "title": "Prompt",
+          "type": "string"
+        },
+        "sample_solution": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sample Solution"
+        },
+        "image_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Image Ids",
+          "type": "array"
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "prompt"
+      ],
+      "title": "NavigationPart",
+      "type": "object"
+    },
+    "PageRegion": {
+      "additionalProperties": false,
+      "description": "A text fragment located on one PDF page.",
+      "properties": {
+        "page": {
+          "minimum": 1,
+          "title": "Page",
+          "type": "integer"
+        },
+        "bbox": {
+          "$ref": "#/$defs/BoundingBox"
+        },
+        "block_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Block Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "page",
+        "bbox"
+      ],
+      "title": "PageRegion",
+      "type": "object"
+    },
+    "Question": {
+      "additionalProperties": false,
+      "description": "One catalog question, including navigation tasks.",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "original_number": {
+          "title": "Original Number",
+          "type": "string"
+        },
+        "question_type": {
+          "$ref": "#/$defs/QuestionType"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "answers": {
+          "items": {
+            "$ref": "#/$defs/Answer"
+          },
+          "title": "Answers",
+          "type": "array"
+        },
+        "correct_answer_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Correct Answer Ids",
+          "type": "array"
+        },
+        "image_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Image Ids",
+          "type": "array"
+        },
+        "catalog_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Catalog Ids",
+          "type": "array"
+        },
+        "source_reference": {
+          "$ref": "#/$defs/SourceReference"
+        },
+        "navigation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/NavigationDetails"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "metadata": {
+          "additionalProperties": true,
+          "title": "Metadata",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "original_number",
+        "question_type",
+        "text",
+        "source_reference"
+      ],
+      "title": "Question",
+      "type": "object"
+    },
+    "QuestionType": {
+      "description": "Supported question shapes.\n\nFurther examinations can add values without changing the export envelope.",
+      "enum": [
+        "single_choice",
+        "multiple_choice",
+        "free_text",
+        "navigation_task"
+      ],
+      "title": "QuestionType",
+      "type": "string"
+    },
+    "SourceReference": {
+      "additionalProperties": false,
+      "description": "Where an extracted item was read.",
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "page": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Page"
+        },
+        "pages": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Pages",
+          "type": "array"
+        },
+        "original_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Original Number"
+        },
+        "bbox": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PageRegion"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "regions": {
+          "items": {
+            "$ref": "#/$defs/PageRegion"
+          },
+          "title": "Regions",
+          "type": "array"
+        },
+        "text_block_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Text Block Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_id"
+      ],
+      "title": "SourceReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Stable JSON document for downstream applications.",
+  "properties": {
+    "schema_version": {
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "parser_version": {
+      "title": "Parser Version",
+      "type": "string"
+    },
+    "exported_at": {
+      "format": "date-time",
+      "title": "Exported At",
+      "type": "string"
+    },
+    "examination": {
+      "title": "Examination",
+      "type": "string"
+    },
+    "catalogs": {
+      "items": {
+        "$ref": "#/$defs/Catalog"
+      },
+      "title": "Catalogs",
+      "type": "array"
+    },
+    "questions": {
+      "items": {
+        "$ref": "#/$defs/Question"
+      },
+      "title": "Questions",
+      "type": "array"
+    },
+    "images": {
+      "items": {
+        "$ref": "#/$defs/ImageAsset"
+      },
+      "title": "Images",
+      "type": "array"
+    },
+    "sources": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Sources",
+      "type": "array"
+    },
+    "validation": {
+      "additionalProperties": true,
+      "title": "Validation",
+      "type": "object"
+    },
+    "metadata": {
+      "additionalProperties": true,
+      "title": "Metadata",
+      "type": "object"
+    }
+  },
+  "required": [
+    "schema_version",
+    "parser_version",
+    "exported_at",
+    "examination",
+    "catalogs",
+    "questions",
+    "images",
+    "sources",
+    "validation"
+  ],
+  "title": "ExportDocument",
+  "type": "object"
+}

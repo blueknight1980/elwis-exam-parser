@@ -1,0 +1,26 @@
+
+services:
+  python:
+    build:
+      context: ..
+      dockerfile: .docker/python/Dockerfile
+      args:
+        UID: ${DOCKER_UID:-1000}
+        GID: ${DOCKER_GID:-1000}
+
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+
+    working_dir: /app
+
+    volumes:
+      - ..:/app
+
+    environment:
+      PYTHONUNBUFFERED: ${PYTHONUNBUFFERED:-1}
+      PYTHONDONTWRITEBYTECODE: ${PYTHONDONTWRITEBYTECODE:-1}
+
+    stdin_open: true
+    tty: true
+
+# important for keep the docker container still alive, even if no command is provided
+    command: sleep infinity
